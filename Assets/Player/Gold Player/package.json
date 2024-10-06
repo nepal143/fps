@@ -1,0 +1,34 @@
+{
+  "name": "se.hertzole.gold-player",
+  "displayName": "Gold Player",
+  "version": "1.7.1",
+  "unity": "2020.3",
+  "description": "Gold Player is a player controller that is focused on being advanced enough to suit a variety of first-person games but still being very user friendly.",
+  "keywords": [
+    "player",
+    "controller"
+  ],
+  "type": "template",
+  "author": {
+    "name": "Hertzole",
+    "email": "contact@hertzole.se",
+    "url": "https://www.hertzole.se"
+  },
+  "samples": [
+    {
+      "displayName": "Basic Controller",
+      "description": "Demonstrates a few of the controllers in a little playground scene.",
+      "path": "Samples~/Basic Controller"
+    },
+    {
+      "displayName": "Interaction",
+      "description": "Shows a simple example of how the interaction and interactable components play together.",
+      "path": "Samples~/Interaction"
+    },
+    {
+      "displayName": "Animator",
+      "description": "Demonstrates a simple usage of the animator component and graphics component.",
+      "path": "Samples~/Animator"
+    }
+  ]
+}
