@@ -35,9 +35,29 @@ namespace InfimaGames.LowPolyShooterPack
         /// </summary>
         private void OnEjectCasing()
         {
-            //Notify.
-            if(weapon != null)
+            // Notify to eject casing if the weapon is not null.
+            if (weapon != null)
                 weapon.EjectCasing();
+        }
+
+        /// <summary>
+        /// Fires the weapon. Called from an Animation Event.
+        /// </summary>
+        private void OnFire()
+        {
+            // Call the fire method on the weapon.
+            if (weapon != null)
+                weapon.Fire();
+        }
+
+        /// <summary>
+        /// Reloads the weapon. Called from an Animation Event.
+        /// </summary>
+        private void OnReload()
+        {
+            // Call the reload method on the weapon.
+            if (weapon != null)
+                weapon.Reload();
         }
 
         #endregion
