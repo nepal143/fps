@@ -4,9 +4,7 @@ using UnityEngine;
 
 namespace InfimaGames.LowPolyShooterPack
 {
-    /// <summary>
-    /// Weapon. This class handles most of the things that weapons need.
-    /// </summary>
+
     public class Weapon : WeaponBehaviour
     {
         #region FIELDS SERIALIZED
