@@ -214,6 +214,7 @@ public class VehicleCamera : MonoBehaviour
         myRigidbody = target.GetComponent<Rigidbody>();
 
         cameraSwitchView = carScript.carSetting.cameraSwitchView;
+        Switch++ ; 
 
     }
 
@@ -258,8 +259,7 @@ public class VehicleCamera : MonoBehaviour
 
         GetComponent<Camera>().fieldOfView = Mathf.Clamp(carScript.speed / 10.0f + 60.0f, 60, 90.0f);
 
-
-
+ 
         if (Input.GetKeyDown(KeyCode.C))
         {
             Switch++;

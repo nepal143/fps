@@ -132,7 +132,7 @@ public class VehicleControl : MonoBehaviour
     public class HitGround
     {
        
-        public string tag = "street";
+        // public string tag = "street";
         public bool grounded = false;
         public AudioClip brakeSound;
         public AudioClip groundSound;
@@ -820,7 +820,7 @@ public class VehicleControl : MonoBehaviour
                     for (int i = 0; i < carSetting.hitGround.Length; i++)
                     {
 
-                        if (hit.collider.CompareTag(carSetting.hitGround[i].tag))
+                        // if (hit.collider.CompareTag(carSetting.hitGround[i].tag))
                         {
                             WGrounded = carSetting.hitGround[i].grounded;
 
