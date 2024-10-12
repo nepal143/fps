@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using TMPro;
+using UnityEngine;
 
 namespace InfimaGames.LowPolyShooterPack
 {
@@ -78,54 +79,23 @@ namespace InfimaGames.LowPolyShooterPack
         [SerializeField]
         private AudioClip audioClipFireEmpty;
 
+        [Header("UI")]
+        [SerializeField] private TMP_Text ammunitionCurrentText;
+        [SerializeField] private TMP_Text totalBulletsText;
+
         #endregion
 
         #region FIELDS
 
-        /// <summary>
-        /// Weapon Animator.
-        /// </summary>
         private Animator animator;
-        /// <summary>
-        /// Attachment Manager.
-        /// </summary>
         private WeaponAttachmentManagerBehaviour attachmentManager;
-
-        /// <summary>
-        /// Amount of ammunition left.
-        /// </summary>
         private int ammunitionCurrent;
+        private int totalBullets = 30;
 
-        /// <summary>
-        /// Total number of bullets available.
-        /// </summary>
-        private int totalBullets = 0; // Set the total number of bullets available.
-
-        #region Attachment Behaviours
-
-        /// <summary>
-        /// Equipped Magazine Reference.
-        /// </summary>
         private MagazineBehaviour magazineBehaviour;
-        /// <summary>
-        /// Equipped Muzzle Reference.
-        /// </summary>
         private MuzzleBehaviour muzzleBehaviour;
-
-        #endregion
-
-        /// <summary>
-        /// The GameModeService used in this game!
-        /// </summary>
         private IGameModeService gameModeService;
-        /// <summary>
-        /// The main player character behaviour component.
-        /// </summary>
         private CharacterBehaviour characterBehaviour;
-
-        /// <summary>
-        /// The player character's camera.
-        /// </summary>
         private Transform playerCamera;
 
         #endregion
@@ -145,21 +115,20 @@ namespace InfimaGames.LowPolyShooterPack
             characterBehaviour = gameModeService.GetPlayerCharacter();
             // Cache the world camera.
             playerCamera = characterBehaviour.GetCameraWorld().transform;
+
+            // Update ammo UI at the start
+            UpdateAmmoUI();
         }
 
         protected override void Start()
         {
-            #region Cache Attachment References
-
-            // Get Magazine.
+            // Get Magazine and Muzzle.
             magazineBehaviour = attachmentManager.GetEquippedMagazine();
-            // Get Muzzle.
             muzzleBehaviour = attachmentManager.GetEquippedMuzzle();
-
-            #endregion
 
             // Max Out Ammo.
             ammunitionCurrent = magazineBehaviour.GetAmmunitionTotal();
+            UpdateAmmoUI();
         }
 
         #endregion
@@ -167,115 +136,104 @@ namespace InfimaGames.LowPolyShooterPack
         #region GETTERS
 
         public override Animator GetAnimator() => animator;
-
         public override Sprite GetSpriteBody() => spriteBody;
-
         public override AudioClip GetAudioClipHolster() => audioClipHolster;
         public override AudioClip GetAudioClipUnholster() => audioClipUnholster;
-
         public override AudioClip GetAudioClipReload() => audioClipReload;
         public override AudioClip GetAudioClipReloadEmpty() => audioClipReloadEmpty;
-
         public override AudioClip GetAudioClipFireEmpty() => audioClipFireEmpty;
-
         public override AudioClip GetAudioClipFire() => muzzleBehaviour.GetAudioClipFire();
-
         public override int GetAmmunitionCurrent() => ammunitionCurrent;
-
         public override int GetAmmunitionTotal() => magazineBehaviour.GetAmmunitionTotal();
-
         public override bool IsAutomatic() => automatic;
         public override float GetRateOfFire() => roundsPerMinutes;
-
         public override bool IsFull() => ammunitionCurrent == magazineBehaviour.GetAmmunitionTotal();
         public override bool HasAmmunition() => ammunitionCurrent > 0;
-
         public override RuntimeAnimatorController GetAnimatorController() => controller;
         public override WeaponAttachmentManagerBehaviour GetAttachmentManager() => attachmentManager;
 
         #endregion
 
         #region METHODS
+
         public override void Reload()
         {
-            // Check if there's ammunition left in total bullets and the weapon isn't full
+            // Check if there's ammunition left in total bullets and the weapon isn't full.
             if (totalBullets > 0 && !IsFull())
             {
-                // Calculate how much we can reload
-                int reloadAmount = Mathf.Min(magazineBehaviour.GetAmmunitionTotal() - ammunitionCurrent, totalBullets);
+                // Calculate the amount of ammo we can reload.
+                int missingAmmo = magazineBehaviour.GetAmmunitionTotal() - ammunitionCurrent;
+                int reloadAmount = Mathf.Min(missingAmmo, totalBullets);
 
-                // Reduce the total bullets by the reload amount
-                totalBullets -= reloadAmount;
+                // Only reload if there's a need to do so.
+                if (reloadAmount > 0)
+                {
+                    // Subtract from total bullets.
+                    totalBullets -= reloadAmount;
+                    // Add to current ammo.
+                    ammunitionCurrent += reloadAmount;
 
-                // Update the current ammunition
-                ammunitionCurrent += reloadAmount;
+                    // Play reload animation.
+                    animator.Play(HasAmmunition() ? "Reload" : "Reload Empty", 0, 0.0f);
 
-                // Play the appropriate reload animation
-                animator.Play(HasAmmunition() ? "Reload" : "Reload Empty", 0, 0.0f);
+                    // Update ammo UI.
+                    UpdateAmmoUI();
+                }
             }
             else if (totalBullets == 0)
             {
-                // If there are no bullets left, do not play any reload animation
                 Debug.Log("No bullets left to reload.");
             }
         }
 
-
         public override void Fire(float spreadMultiplier = 1.0f)
         {
-            // We need a muzzle in order to fire this weapon!
-            if (muzzleBehaviour == null)
+            if (muzzleBehaviour == null || playerCamera == null)
                 return;
 
-            // Make sure that we have a camera cached.
-            if (playerCamera == null)
-                return;
-
-            // Check if we have ammo left
             if (!HasAmmunition())
             {
-                // Play the empty fire sound
                 AudioSource.PlayClipAtPoint(audioClipFireEmpty, transform.position);
                 return;
             }
 
-            // Get Muzzle Socket. This is the point we fire from.
             Transform muzzleSocket = muzzleBehaviour.GetSocket();
-
-            // Play the firing animation.
-            const string stateName = "Fire";
-            animator.Play(stateName, 0, 0.0f);
-            // Reduce ammunition! We just shot, so we need to get rid of one!
+            animator.Play("Fire", 0, 0.0f);
             ammunitionCurrent = Mathf.Clamp(ammunitionCurrent - 1, 0, magazineBehaviour.GetAmmunitionTotal());
 
-            // Play all muzzle effects.
             muzzleBehaviour.Effect();
 
-            // Determine the rotation that we want to shoot our projectile in.
             Quaternion rotation = Quaternion.LookRotation(playerCamera.forward * 1000.0f - muzzleSocket.position);
 
-            // If there's something blocking, aim directly at that for more accurate shooting.
-            if (Physics.Raycast(new Ray(playerCamera.position, playerCamera.forward),
-                out RaycastHit hit, maximumDistance, mask))
+            if (Physics.Raycast(new Ray(playerCamera.position, playerCamera.forward), out RaycastHit hit, maximumDistance, mask))
                 rotation = Quaternion.LookRotation(hit.point - muzzleSocket.position);
 
-            // Spawn projectile from the projectile spawn point.
             GameObject projectile = Instantiate(prefabProjectile, muzzleSocket.position, rotation);
-            // Add velocity to the projectile.
             projectile.GetComponent<Rigidbody>().velocity = projectile.transform.forward * projectileImpulse;
+
+            // Update ammo UI.
+            UpdateAmmoUI();
         }
 
         public override void FillAmmunition(int amount)
         {
-            // Update the total bullets.
             totalBullets = amount;
+            UpdateAmmoUI();
         }
 
         public override void EjectCasing()
         {
-            // Spawn casing prefab at spawn point.
             if (prefabCasing != null && socketEjection != null)
                 Instantiate(prefabCasing, socketEjection.position, socketEjection.rotation);
+        }
+
+        private void UpdateAmmoUI()
+        {
+            if (ammunitionCurrentText != null)
+                ammunitionCurrentText.text = ammunitionCurrent.ToString();
+
+            if (totalBulletsText != null)
+                totalBulletsText.text = totalBullets.ToString();
         }
 
         #endregion
