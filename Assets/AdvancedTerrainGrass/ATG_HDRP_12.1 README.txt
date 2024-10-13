@@ -1,0 +1,4 @@
+## ATG_HDRP_12.1 unitypackage
+
+This package contains a preview of the ATG HDPR shaders tweaked for Unity 2021 and HDRP 12.1. Importing it will add HDRP 12.1 compatible Shader Graph shaders, materials and a new "Demo HDRP" scene.
+It will also update the Grass Manger script in order to support motion vectors.

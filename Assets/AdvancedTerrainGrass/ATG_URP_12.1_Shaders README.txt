@@ -1,0 +1,24 @@
+## ATG_URP_12.1_Shaders unitypackage
+
+This package contains the ATG URP shaders tweaked for Unity 2021.2.0f1 and URP 12.1. Importing it will overwrite other URP compatible shaders. Make sure you have installed the ATG_URP_7.2_Support unitypackage first!
+
+In case you want to use URP Grassdisplacement (touch bending) install the "ATG_URP_GrassDisplacement" first. The "ATG_URP_12.1_Shaders" then will override some files if installed on top.
+
+
+## Further notes
+
+As URP 12.1 now allows you to use instanced materials directly within the terrain engine the preview in edit mode is way better even if you have not activated "Draw in edit mode" in the Grass Manager. In order to make use of it make sure that the prefabs asigned to the terrain engine have  proper material assigned on which GPU instancing is enabled.
+
+ATG for URP 12.1. supports forward and deferred rendering. In order to simulate or apply translucent lighting in deferred ATG offers several techniques:
+
+# Standard
+Well, this mode does not support any kind of transmission… Normals of back faces will be corrected using VFACE - cheap.
+
+# Simple
+Just like SpeedTree the shader will not flip the normals based on VFACE. So some faces will show up proper front face lighting, some will show up false back face lighting. This will create the illusion of transmission but also may add a lot of false specular highlights - cheapest.
+
+# NormalVS
+This will not add transmission lighting but may correct and smooth lighting compared to Standard and Simple. Normals here are not flipped or mirrored based on VFACE but will be tweaked in screen space to always point towards the camera - a bit more expensive.
+
+# Transmission
+This mode will add proper transmission lighting for the most dominant directional light only. Additional spot or point lights are not supported. This mode will sampe shadows and cookies in the deferred GBuffer pass (which usually does not do this at all) and thus makes it: most expensive.

@@ -585,31 +585,31 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 8512d52775bf95340b741dfb9552c938, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 392.4643
+      value: 166.03119
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 8512d52775bf95340b741dfb9552c938, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 5.6728024
+      value: 13.486607
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 8512d52775bf95340b741dfb9552c938, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 116.25238
+      value: 261.67557
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 8512d52775bf95340b741dfb9552c938, type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.59888643
+      value: -0.637329
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 8512d52775bf95340b741dfb9552c938, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.06493274
+      value: -0.083392955
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 8512d52775bf95340b741dfb9552c938, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.7935467
+      value: -0.75957364
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 8512d52775bf95340b741dfb9552c938, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.08603828
+      value: 0.09952548
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 8512d52775bf95340b741dfb9552c938, type: 3}
       propertyPath: target
@@ -1088,6 +1088,10 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: 0.156
       objectReference: {fileID: 0}
+    - target: {fileID: 2399696, guid: b82529e8ddfc06e4fb493d04ff82ec97, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 2402e409b4791fe4ea856dfbed09d7ab, type: 2}
     - target: {fileID: 11489280, guid: b82529e8ddfc06e4fb493d04ff82ec97, type: 3}
       propertyPath: carSetting.automaticGear
       value: 1
