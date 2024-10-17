@@ -1,13 +1,4 @@
-/*
-useful links:
-https://forum.unity3d.com/threads/how-to-assign-matrix4x4-to-transform.121966/
-http://answers.unity3d.com/questions/402280/how-to-decompose-a-trs-matrix.html
-https://github.com/MattRix/UnityDecompiled/blob/master/UnityEngine/UnityEngine/Matrix4x4.cs
-http://www.euclideanspace.com/maths/geometry/rotations/conversions/quaternionToMatrix/index.htm
-https://forum.unity3d.com/threads/problem-copying-real-time-lighting-data.488474/
-copiedRenderer.realtimeLightmapIndex = sourceRenderer.realtimeLightmapIndex;
-copiedRenderer.realtimeLightmapScaleOffset = sourceRenderer.realtimeLightmapScaleOffset;
-*/
+
 
 using System;
 using System.Threading;
